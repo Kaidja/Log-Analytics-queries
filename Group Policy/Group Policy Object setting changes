@@ -1,0 +1,10 @@
+SecurityEvent 
+| where EventID == 5136 
+| extend MyData = tostring(parse_xml(EventData))
+| extend Administrator = extractjson("$['EventData']['Data'][3]#text", MyData)
+| extend GPOObject = extractjson("$['EventData']['Data'][8]#text", MyData)
+| extend ObjectGUID = extractjson("$['EventData']['Data'][9]#text", MyData)
+| extend DisplayName = extractjson("$['EventData']['Data'][11]#text", MyData)
+| extend OperationType = extractjson("$['EventData']['Data'][14]#text", MyData)
+| where DisplayName == "gPCMachineExtensionNames" // GPO changed
+| project Administrator, GPOObject, ObjectGUID, DisplayName, OperationType, TimeGenerated | sort by TimeGenerated
