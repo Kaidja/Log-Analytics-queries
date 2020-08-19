@@ -1,0 +1,12 @@
+SecurityEvent 
+| where EventID == 5136 
+| extend MyData = tostring(parse_xml(EventData))
+| extend Administrator = extractjson("$['EventData']['Data'][3]#text", MyData)
+| extend LinkedOU = extractjson("$['EventData']['Data'][8]#text", MyData)
+| extend ObjectGUID = extractjson("$['EventData']['Data'][9]#text", MyData)
+| extend GPOName = extractjson("$['EventData']['Data'][13]#text", MyData)
+| extend DisplayName = extractjson("$['EventData']['Data'][11]#text", MyData)
+| extend OperationType = extractjson("$['EventData']['Data'][14]#text", MyData)
+| where DisplayName == "gPLink"
+| where OperationType == "%%14675" //Type:	Value Deleted
+| project Administrator, LinkedOU, ObjectGUID, GPOName, DisplayName, OperationType, TimeGenerated | sort by TimeGenerated
