@@ -1,0 +1,9 @@
+// List only human made changes. List only add only changes
+IdentityDirectoryEvents 
+| where ActionType == 'Group Membership changed'
+| extend ParsedFields=parse_json(AdditionalFields)
+| where ParsedFields contains 'TO.GROUP' and ParsedFields contains 'ACTOR.ACCOUNT'
+| extend Administrator = ParsedFields.['ACTOR.ACCOUNT'] 
+| extend TargetAccount = ParsedFields.['TARGET_OBJECT.USER']
+| extend GroupName = ParsedFields.['TO.GROUP']
+| project Timestamp, Administrator, TargetAccount, GroupName
