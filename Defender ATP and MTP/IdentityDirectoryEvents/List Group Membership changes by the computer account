@@ -1,0 +1,9 @@
+// Group Membership changes by the computer account
+IdentityDirectoryEvents
+| where ActionType == 'Group Membership changed'
+| extend ParsedFields=parse_json(AdditionalFields)
+| where ParsedFields contains 'TO.GROUP' and ParsedFields contains 'ACTOR.DEVICE'
+| extend Device = ParsedFields.['ACTOR.DEVICE'] 
+| extend TargetAccount = ParsedFields.['TARGET_OBJECT.USER']
+| extend GroupName = ParsedFields.['TO.GROUP']
+| project Timestamp, Device, TargetAccount, GroupName
