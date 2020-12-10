@@ -8,4 +8,3 @@ ProtectionStatus
 | where Computer in (AllWindowsServers)
 | sort by TimeGenerated desc
 | summarize arg_max(TimeGenerated, *) by SourceComputerId
-| summarize  count() by TypeofProtection, AMProductVersion
