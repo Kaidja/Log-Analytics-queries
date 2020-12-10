@@ -1,0 +1,11 @@
+// Get Antivirus status
+let AllWindowsServers =
+Heartbeat 
+| where OSType == 'Windows' and OSType != "Linux"
+| summarize arg_max(TimeGenerated, *) by SourceComputerId
+| summarize makeset(Computer);
+ProtectionStatus
+| where Computer in (AllWindowsServers)
+| sort by TimeGenerated desc
+| summarize arg_max(TimeGenerated, *) by SourceComputerId
+| summarize  count() by TypeofProtection, AMProductVersion
