@@ -1,4 +1,4 @@
-// Get Antivirus status
+// Get Antivirus status - Windows only
 let AllWindowsServers =
 Heartbeat 
 | where OSType == 'Windows' and OSType != "Linux"
