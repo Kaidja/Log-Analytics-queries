@@ -1,0 +1,9 @@
+AuditLogs 
+| where LoggedByService == "AAD Management UX"
+| where Category == "DeviceManagement"
+| where OperationName == "Download devices - finished (bulk)"
+
+AuditLogs 
+| where LoggedByService == "AAD Management UX"
+| where Category == "DeviceManagement"
+| where OperationName == "Download devices - started (bulk)"
